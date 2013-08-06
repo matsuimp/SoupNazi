@@ -40,12 +40,11 @@ def objective_function(x):
 def extract_store_specific_pounds(x, store):
     start_index = store * len(ingredients)
     end_index = start_index + len(ingredients)
-    result =  x[start_index:end_index]
-    return result
+    return x[start_index:end_index]
 
 def extract_ingredient_specific_pounds(x, ingredient):
-    result = x[ingredient::len(ingredients)]
-    return result
+    return x[ingredient::len(ingredients)]
+
 
 def calc_food_ratio_constraint(ingredient):
     return ({'type' : 'ineq',
@@ -95,9 +94,9 @@ def print_summary(result):
     print 'Soup Nazi should pick up %f lbs of ingredients' % (result.fun * -1)
     index = 0
     for s in stores:
-        print "%f lbs of food from %s. Able to carry %f pounds." % (np.sum(extract_store_specific_pounds(result.x, s)), store_names[s], max_per_store[s])
+        print "%.3f lbs of food from %s. Able to carry %.1f pounds." % (np.sum(extract_store_specific_pounds(result.x, s)), store_names[s], max_per_store[s])
         for i in ingredients:
-            print "\t%s: %f lbs (%f in stock)" % (ingredient_names[i], result.x[index], store_inventory[s][i])
+            print "\t%s: %.3f lbs (%.1f in stock)" % (ingredient_names[i], result.x[index], store_inventory[s][i])
             index = index + 1
 
 
@@ -107,7 +106,7 @@ def print_summary(result):
         lbs = np.sum(extract_ingredient_specific_pounds(result.x, i))
         total_inventory = np.sum(map(lambda s : store_inventory[s][i], store_inventory.keys()))
         percent = (lbs / result.fun) * -100
-        print '%f lbs of %s. %f available across all stores. %f%%' % (lbs, ingredient_names[i], total_inventory, percent)
+        print '%.3f lbs of %s. %.1f available across all stores. %.2f%%' % (lbs, ingredient_names[i], total_inventory, percent)
 
 
 
